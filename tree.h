@@ -182,7 +182,7 @@ private:
                 delete pair1.second;
                 return pair1.first;
             } else {
-                delete t;
+                delete t->left;
                 return merge(pair1.first, t->right);
             }
         } else {
