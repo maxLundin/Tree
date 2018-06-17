@@ -11,6 +11,8 @@
 #include <string>
 #include <iostream>
 #include <iterator>
+#include <cassert>
+
 
 template<typename T>
 
@@ -27,8 +29,7 @@ class Tree {
             prior = prio;
         }
 
-        Node(Node const &other) : left(other.left), right(other.right), val(other.val), prior(other.prior) {
-        }
+        Node(Node const &other) : left(other.left), right(other.right), val(other.val), prior(other.prior) {}
 
     };
 
@@ -54,16 +55,14 @@ public:
         }
 
         S &operator*() const {
-            if (temp != nullptr) {
-                return (temp)->val;
-            }
+            assert(temp != nullptr);
+            return (temp)->val;
+
         }
 
         S *operator->() const {
-            if (temp != nullptr) {
-                return &(temp->val);
-            }
-
+            assert(temp != nullptr);
+            return &(temp->val);
         }
 
         iterator1 &operator++() {
@@ -86,23 +85,14 @@ public:
 
         iterator1 operator++(int) {
             Node *cur = temp;
-            if (temp != nullptr) {
-
-                temp = next(*root, (temp)->val);
-            } else {
-                temp = getLast(root);
-            }
+            ++(*this);
             return iterator1(cur, root);
 
         }
 
         iterator1 operator--(int) {
             Node *cur = temp;
-            if (temp != nullptr) {
-                temp = prev(*root, (temp)->val);
-            } else {
-                temp = getLast(root);
-            }
+            --(*this);
             return iterator1(cur, root);
 
         }
@@ -180,10 +170,6 @@ private:
     Node *del(T const &val) {
         std::pair<Node *, Node *> pair1 = split(root, val);
         Node *t = pair1.second;
-        if (t == nullptr) {
-            delete pair1.second;
-            return pair1.first;
-        }
         if (t->left == nullptr) {
             if (t->right == nullptr) {
                 delete pair1.second;
@@ -199,7 +185,6 @@ private:
                 r = r->left;
             }
             Node *y = r->left;
-
             r->left = r->left->right;
             delete y;
         }
@@ -285,8 +270,7 @@ public:
 
     Tree() noexcept : root(nullptr) {}
 
-    Tree(Tree const &other) :
-            Tree() {
+    Tree(Tree const &other) : Tree() {
         if (other.root) {
             for (T const &node : other) {
                 insert(node);
