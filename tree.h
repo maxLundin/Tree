@@ -42,12 +42,12 @@ public:
 
     private:
         Node *temp;
-        Node *root;
+        const Tree *tree;
 
-        iterator1(Node *data, Node *root1) : temp(data), root(root1) {}
+        iterator1(Node *data, const Tree *root1) : temp(data), tree(root1) {}
 
     public:
-        iterator1() : temp(nullptr), root(nullptr) {}
+        iterator1() : temp(nullptr), tree(nullptr) {}
 
         template<typename C>
         iterator1(const iterator1<C> &data) {
@@ -67,18 +67,18 @@ public:
 
         iterator1 &operator++() {
             if (temp != nullptr) {
-                temp = next(*root, (temp)->val);
+                temp = next((*(*tree).root), (temp)->val);
             } else {
-                temp = getLast(root);
+                temp = getLast((*tree).root);
             }
             return *this;
         }
 
         iterator1 &operator--() {
             if (temp != nullptr) {
-                temp = prev(*root, (temp)->val);
+                temp = prev((*(*tree).root), (temp)->val);
             } else {
-                temp = getLast(root);
+                temp = getLast((*tree).root);
             }
             return *this;
         }
@@ -86,14 +86,14 @@ public:
         iterator1 operator++(int) {
             Node *cur = temp;
             ++(*this);
-            return iterator1(cur, root);
+            return iterator1(cur, tree);
 
         }
 
         iterator1 operator--(int) {
             Node *cur = temp;
             --(*this);
-            return iterator1(cur, root);
+            return iterator1(cur, tree);
 
         }
 
@@ -296,24 +296,24 @@ public:
     const_iterator lower_bound(T const &elem) {
         Node *lb = nullptr;
         lb = find_lower_bound(root, lb, elem);
-        return const_iterator(lb, root);
+        return const_iterator(lb, this);
     }
 
     const_iterator upper_bound(T const &elem) {
         Node *ub = nullptr;
         ub = find_upper_bound(root, ub, elem);
-        return const_iterator(ub, root);
+        return const_iterator(ub, this);
     }
 
     iterator begin() const {
         if (!root) {
-            return const_iterator(nullptr, root);
+            return const_iterator(nullptr, this);
         }
         Node *temp = root;
         while (temp->left != nullptr) {
             temp = temp->left;
         }
-        return const_iterator(temp, root);
+        return const_iterator(temp, this);
     }
 
     const_reverse_iterator rbegin() const {
@@ -321,7 +321,7 @@ public:
     }
 
     const_iterator end() const {
-        return const_iterator(nullptr, root);
+        return const_iterator(nullptr, this);
     }
 
     const_reverse_iterator rend() const {
@@ -332,7 +332,7 @@ public:
         if (findElem(root, elem) == nullptr) {
             auto smth = add(elem);
             root = smth.first;
-            iterator iter = iterator(smth.second, root);
+            iterator iter = iterator(smth.second, this);
             return std::make_pair(iter, true);
         } else {
             return std::make_pair(iterator(nullptr, nullptr), false);
@@ -342,11 +342,11 @@ public:
     iterator erase(iterator iter) {
         auto smth = next(*root, *iter);
         root = del(*iter);
-        return iterator(smth, root);
+        return iterator(smth, this);
     }
 
     const_iterator find(const T elem) const {
-        return const_iterator(findElem(root, elem), root);
+        return const_iterator(findElem(root, elem), this);
     }
 
     bool empty() const {
