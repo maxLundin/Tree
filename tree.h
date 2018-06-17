@@ -286,13 +286,12 @@ private:
     }
 
 public:
-    Tree() : root(nullptr) {}
+    Tree() noexcept : root(nullptr) {}
 
-    Tree(Tree const &other) {
+    Tree(Tree const &other) : Tree() {
         if (other.root) {
-            root = new Node(*(other.root));
-            if (root) {
-                dfs(other.root, root);
+            for (T const &node : other) {
+                insert(node);
             }
         } else {
             root = nullptr;
@@ -307,9 +306,8 @@ public:
     friend void swap(Tree<S> &a, Tree<S> &b);
 
     Tree &operator=(Tree const &other) {
-        if (this->root != other.root) {
-            Tree(other).swap(*this);
-        }
+        Tree tree(other);
+        swap(*this, tree);
         return *this;
     }
 
