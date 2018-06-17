@@ -46,17 +46,21 @@ public:
         iterator1(Node *data, Node *root1) : temp(data), root(root1) {}
 
     public:
+        iterator1() : temp(nullptr), root(nullptr) {}
+
         template<typename C>
         iterator1(const iterator1<C> &data) {
             temp = data.temp;
         }
 
         S &operator*() const {
-            return (temp)->val;
+            if (temp != nullptr)
+                return (temp)->val;
         }
 
         S *operator->() const {
-            return &(temp->val);
+            if (temp != nullptr)
+                return &(temp->val);
         }
 
         iterator1 &operator++() {
