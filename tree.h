@@ -54,13 +54,16 @@ public:
         }
 
         S &operator*() const {
-            if (temp != nullptr)
+            if (temp != nullptr) {
                 return (temp)->val;
+            }
         }
 
         S *operator->() const {
-            if (temp != nullptr)
+            if (temp != nullptr) {
                 return &(temp->val);
+            }
+
         }
 
         iterator1 &operator++() {
@@ -279,9 +282,11 @@ private:
     }
 
 public:
+
     Tree() noexcept : root(nullptr) {}
 
-    Tree(Tree const &other) : Tree() {
+    Tree(Tree const &other) :
+            Tree() {
         if (other.root) {
             for (T const &node : other) {
                 insert(node);
@@ -300,7 +305,7 @@ public:
 
     Tree &operator=(Tree const &other) {
         Tree tree(other);
-        swap(*this, tree);
+        tree.swap(*this);
         return *this;
     }
 
