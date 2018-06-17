@@ -277,9 +277,13 @@ public:
     Tree() : root(nullptr) {}
 
     Tree(Tree const &other) {
-        root = new Node(*(other.root));
-        if (root) {
-            dfs(other.root, root);
+        if (other.root) {
+            root = new Node(*(other.root));
+            if (root) {
+                dfs(other.root, root);
+            }
+        } else {
+            root = nullptr;
         }
     }
 
@@ -358,8 +362,10 @@ public:
     }
 
     void clear() {
-        delTree(root);
-        root = nullptr;
+        if (root != nullptr) {
+            delTree(root);
+            root = nullptr;
+        }
     }
 
     ~Tree() {
