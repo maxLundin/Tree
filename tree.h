@@ -79,14 +79,25 @@ public:
 
         iterator1 operator++(int) {
             Node *cur = temp;
-            temp = next(*root, (temp)->val);
+            if (temp != nullptr) {
+
+                temp = next(*root, (temp)->val);
+            } else {
+                temp = getLast(root);
+            }
             return iterator1(cur, root);
+
         }
 
         iterator1 operator--(int) {
             Node *cur = temp;
-            temp = prev(*root, (temp)->val);
+            if (temp != nullptr) {
+                temp = prev(*root, (temp)->val);
+            } else {
+                temp = getLast(root);
+            }
             return iterator1(cur, root);
+
         }
 
         bool operator==(iterator1 const second) const {
