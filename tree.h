@@ -287,6 +287,8 @@ public:
         std::swap(root, a.root);
     }
 
+    template <typename S>
+    friend void swap(Tree<S> &a, Tree<S> &b);
 
     Tree &operator=(Tree const &other) {
         if (this->root != other.root) {
@@ -366,7 +368,9 @@ public:
 
 };
 
-friend void Tree::swap(Tree &a, Tree &b) {
+
+template<typename T>
+void swap(Tree<T> &a, Tree<T> &b) {
     std::swap(a.root, b.root);
 }
 
