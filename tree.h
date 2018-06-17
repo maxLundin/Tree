@@ -274,17 +274,6 @@ private:
         delete node;
     }
 
-    void dfs(Node *a, Node *b) {
-        if (a->left != nullptr) {
-            b->left = new Node(*(a->left));
-            dfs(a->left, b->left);
-        }
-        if (a->right != nullptr) {
-            b->right = new Node(*(a->right));
-            dfs(a->right, b->right);
-        }
-    }
-
 public:
     Tree() noexcept : root(nullptr) {}
 
