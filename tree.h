@@ -56,7 +56,7 @@ public:
         }
 
         S *operator->() const {
-            return *(temp->val);
+            return &(temp->val);
         }
 
         iterator1 &operator++() {
@@ -287,7 +287,7 @@ public:
         std::swap(root, a.root);
     }
 
-    template <typename S>
+    template<typename S>
     friend void swap(Tree<S> &a, Tree<S> &b);
 
     Tree &operator=(Tree const &other) {
