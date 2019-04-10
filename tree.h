@@ -2,9 +2,7 @@
 // Created by max on 17.06.18.
 //
 
-#ifndef TREE_TREE_H
-#define TREE_TREE_H
-
+#pragma once
 
 #include <stdlib.h>
 #include <utility>
@@ -15,7 +13,6 @@
 
 
 template<typename T>
-
 class Tree {
     struct Node {
         Node *left;
@@ -37,20 +34,20 @@ class Tree {
 
 public:
     template<typename S>
-    struct iterator1 {
+    struct m_iterator {
         friend class Tree;
 
     private:
         Node *temp;
         const Tree *tree;
 
-        iterator1(Node *data, const Tree *root1) : temp(data), tree(root1) {}
+        m_iterator(Node *data, const Tree *root1) : temp(data), tree(root1) {}
 
     public:
-        iterator1() : temp(nullptr), tree(nullptr) {}
+        m_iterator() : temp(nullptr), tree(nullptr) {}
 
         template<typename C>
-        iterator1(const iterator1<C> &data) {
+        m_iterator(const m_iterator<C> &data) {
             temp = data.temp;
         }
 
@@ -65,7 +62,7 @@ public:
             return &(temp->val);
         }
 
-        iterator1 &operator++() {
+        m_iterator &operator++() {
             if (temp != nullptr) {
                 temp = next((*(*tree).root), (temp)->val);
             } else {
@@ -74,7 +71,7 @@ public:
             return *this;
         }
 
-        iterator1 &operator--() {
+        m_iterator &operator--() {
             if (temp != nullptr) {
                 temp = prev((*(*tree).root), (temp)->val);
             } else {
@@ -83,25 +80,25 @@ public:
             return *this;
         }
 
-        iterator1 operator++(int) {
+        const m_iterator operator++(int) {
             Node *cur = temp;
             ++(*this);
-            return iterator1(cur, tree);
+            return m_iterator(cur, tree);
 
         }
 
-        iterator1 operator--(int) {
+        const m_iterator operator--(int) {
             Node *cur = temp;
             --(*this);
-            return iterator1(cur, tree);
+            return m_iterator(cur, tree);
 
         }
 
-        bool operator==(iterator1 const second) const {
+        bool operator==(m_iterator const second) const {
             return temp == second.temp;
         }
 
-        bool operator!=(iterator1 const second) const {
+        bool operator!=(m_iterator const second) const {
             return temp != second.temp;
         }
 
@@ -113,8 +110,8 @@ public:
 
     };
 
-    typedef iterator1<const T> iterator;
-    typedef iterator1<const T> const_iterator;
+    typedef m_iterator<const T> iterator;
+    typedef m_iterator<const T> const_iterator;
     typedef std::reverse_iterator<iterator> reverse_iterator;
     typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
@@ -372,4 +369,3 @@ void swap(Tree<T> &a, Tree<T> &b) {
     std::swap(a.root, b.root);
 }
 
-#endif //TREE_TREE_H
